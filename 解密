@@ -1,0 +1,38 @@
+#include<stdio.h>
+#include<string.h> 
+int main()
+{
+  char enc[101],src[101],msg[101],miyao2[27],jie[101];
+  int len1,len2,a;a=0;
+  char miyao1[27]={'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+  scanf("%s%s%s",enc,src,msg);
+  len1=strlen(enc);
+   for(int i=0;i<26;i++){
+   	for(int j=0;j<len1;j++){
+   		if(miyao1[i]==src[j]){
+   			miyao2[i]=enc[j];
+   			a++;
+		   }
+		   else{
+		   	continue;
+		   }
+	   }
+   }
+   len2=strlen(msg);
+   for(int i=0;i<26;i++){
+   	for(int j=0;j<len2;j++){
+   		if(miyao2[i]==msg[j]){
+   			miyao1[i]=jie[j];
+		   }
+		   else{
+		   	continue;
+		   }
+	   }
+   }
+   if(a==26){
+   	printf("%s",jie);
+   } 
+   else{
+   	printf("Failed"); 
+   }       
+}
