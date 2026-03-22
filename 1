@@ -1,0 +1,43 @@
+#include<stdio.h>
+
+int main(void){
+    int xu[100];
+    int a, n = 0;  // n记录实际元素个数
+    
+    // 读取输入，最多100个
+    while(scanf("%d", &a) != EOF && n < 100){
+        xu[n] = a;
+        n++;
+    }
+    
+    // 如果元素个数少于2，无法检查模式
+    if(n < 2){
+        printf("No\n");
+        return 0;
+    }
+    
+    int valid = 1;  // 假设序列有效
+    
+    // 检查模式：位置0和1相等，1和2不等，2和3相等，3和4不等...
+    for(int i = 0; i < n - 1; i++){
+        if(i % 2 == 0){  // 第0,2,4...对（xu[0]&xu[1], xu[2]&xu[3]...）
+            if(xu[i] != xu[i+1]){
+                valid = 0;
+                break;
+            }
+        } else {  // 第1,3,5...对（xu[1]&xu[2], xu[3]&xu[4]...）
+            if(xu[i] == xu[i+1]){
+                valid = 0;
+                break;
+            }
+        }
+    }
+    
+    if(valid){
+        printf("Yes\n");
+    } else {
+        printf("No\n");
+    }
+    
+    return 0;
+}
