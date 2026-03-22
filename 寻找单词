@@ -1,0 +1,57 @@
+#include<stdio.h>
+#include<string.h>
+#include<ctype.h> 
+int main()
+{
+	char yuan[1000],bian[1000],c[10],d[10];
+	int len1,len2,use=0,zong=0,p;
+	scanf("%s",c);
+	getchar(); 
+    fgets(yuan,sizeof(yuan),stdin); 
+    yuan[strcspn(yuan,"\n")]='\0';
+	len1=strlen(yuan);
+	for(int i=0;i<len1;i++){
+		bian[i]=tolower(yuan[i]);
+	}
+	bian[len1]='\0';
+	len2=strlen(c);
+	for(int i=0;i<len2;i++){
+		d[i]=tolower(c[i]);
+	}
+
+    for(int i=0;i<len1;i++) {
+    	
+		for(int j=0;j<len2;j++){
+			if(bian[i+j]!=d[j]){use=0; 
+					break;
+			}
+			else{
+				use+=1;
+			} 
+		}
+		if(use==len2){
+			if(i!=0){			
+			if((bian[i+len2]==' '&&bian[i-1]==' ')||(bian[i+len2]=='\0'&&bian[i-1]==' ')){
+				zong+=1;
+				use=0;
+			}}
+			else if((i==0&&bian[len2]==' ')||(i==0&&bian[len2]=='\0')){
+					zong+=1;
+				use=0;
+			}
+			else{;
+			}
+			if(zong==1){
+				p=i;
+			} 
+		}
+		
+	}
+	if(zong!=0){
+	printf("%d\n",zong);
+	printf("%d",p);}
+	else{
+		printf("-1");
+	}
+	return 0; 
+}
