@@ -1,0 +1,55 @@
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+int main()
+{
+	int a[100],m,n;
+	double b,sum=0,sim=0,row[100];
+	char str[100][100];
+	memset(str,0, sizeof(str)); 
+	scanf("%d%d",&n,&m);
+	for(int i=0;i<n;i++){
+		scanf("%s",str[i]);
+		for(int j=0;j<m;j++){
+			scanf("%d",&a[j]);
+			sum+=a[j];
+		}
+		b=sum/m;
+		for(int j=0;j<m;j++){
+			sim+=(b-a[j])*(b-a[j]);
+		}
+		row[i]=sqrt(sim/m);
+		sum=sim=0;
+	}
+	for(int i=0;i<n-1;i++){
+		for(int j=0;j<n-i-1;j++){
+		if(row[j]<row[j+1]){			
+			char d[100];
+			memset(d,0, sizeof(d)); 		
+	        strcpy(d,str[j]);strcpy(str[j],str[j+1]);strcpy(str[j+1],d);
+	        double c = row[j];
+                row[j] = row[j + 1];
+                row[j + 1] = c;
+		}
+		else if(fabs(row[j]-row[j + 1])<1e-9){
+			if(strcmp(str[j],str[j+1])>0){
+				char e[100];
+			memset(e,0, sizeof(e)); 		
+	        strcpy(e,str[j]);
+			strcpy(str[j],str[j+1]);
+			strcpy(str[j+1],e);
+			}
+		}
+		}
+	}
+	if(n>20){
+		n=20;
+	}
+	else{
+		;
+	}
+	for(int i=0;i<n;i++){
+		printf("%s\n",str[i]);    
+	}
+	return 0;	
+}
