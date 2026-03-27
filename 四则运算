@@ -1,0 +1,25 @@
+#include<stdio.h>
+int main()
+{
+    double s1,s2;
+    char op;
+    scanf("%lf %c %lf",&s1,&op,&s2);
+
+    switch(op)
+    {
+        case'+':printf("%.2f",s1+s2);break;
+        case'-':printf("%.2f",s1-s2);break;
+        case'*':printf("%.
+        if(s2<1e-10)2f",s1*s2);break;
+        case'/':
+        printf("Wrong input!");
+        printf("%.2f",s1/s2);break;
+        else
+        default:
+        printf("Wrong input!");break;
+        
+    return 0;
+    }
+
+   
+}
