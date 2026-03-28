@@ -1,0 +1,51 @@
+#include<stdio.h>
+#include<string.h>
+int main(void)
+{char dna_sequence[256],complementary_dna[256];
+int len;
+	scanf("%s",dna_sequence);
+	len=strlen(dna_sequence);
+
+for(int i=0;i<len;i++){
+	if(dna_sequence[i]=='A'){
+		complementary_dna[i]='T';
+	}
+	else if(dna_sequence[i]=='T'){
+			complementary_dna[i]='A';
+		}
+	else if(dna_sequence[i]=='C'){
+			complementary_dna[i]='G';
+    }
+	else if(dna_sequence[i]=='G'){
+			complementary_dna[i]='C';
+	}	
+}
+for(int i=0;i<len;i++){
+	printf("%c",complementary_dna[i]);
+}
+}#include<stdio.h>
+#include<string.h>
+int main(void)
+{char dna_sequence[256],complementary_dna[256];
+int len;
+	scanf("%s",dna_sequence);
+	len=strlen(dna_sequence);
+
+for(int i=0;i<len;i++){
+	if(dna_sequence[i]=='A'){
+		complementary_dna[i]='T';
+	}
+	else if(dna_sequence[i]=='T'){
+			complementary_dna[i]='A';
+		}
+	else if(dna_sequence[i]=='C'){
+			complementary_dna[i]='G';
+    }
+	else if(dna_sequence[i]=='G'){
+			complementary_dna[i]='C';
+	}	
+}
+for(int i=0;i<len;i++){
+	printf("%c",complementary_dna[i]);
+}
+}
