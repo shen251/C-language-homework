@@ -1,0 +1,45 @@
+#include<stdio.h>
+
+int main() {
+    int k, n, sum[100] = {0};
+    double avg[100] = {0}, avg1[100] = {0};
+    scanf("%d%d", &n, &k);
+    int aya[100][100];
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= k; j++) {
+            scanf("%d", &aya[i][j]);
+        }
+    }
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= k; j++) {
+            sum[i] += aya[i][j];
+        }
+        avg[i] = (double)sum[i] / k;
+    }
+    for (int i = 1; i <= n; i++) {
+        avg1[i] = avg[i];
+    }
+    for (int i = 1; i <= n - 1; i++) {
+        for (int j = 1; j <= n - i; j++) {
+            if (avg[j] < avg[j + 1]) {
+                double v = avg[j];
+                avg[j] = avg[j + 1];
+                avg[j + 1] = v;
+            }
+        }
+    }
+    int printed = 0;
+    for (int i = 1; i <= n && printed < 2; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (avg[i] == avg1[j]) {
+                if (printed > 0) printf("");
+                printf("%d\n", j);
+                printed++;
+                avg1[j] = -1;  
+                break;         
+            }
+        }
+    }
+
+    return 0;
+}
