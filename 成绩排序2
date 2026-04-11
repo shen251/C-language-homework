@@ -1,0 +1,90 @@
+#include<stdio.h>
+#include<string.h>
+
+// 定义学生结构体
+typedef struct {
+    int id;        // 学生原始编号（1~n）
+    int yuwen;     // 语文成绩
+    int math;      // 数学成绩
+    int english;   // 英语成绩
+    int zong;      // 总分 = 语文+数学+英语
+    int yushu;     // 语数总分 = 语文+数学
+    int max;       // 语文和数学的最高分
+    int pai;       // 最终排名
+} student;
+
+int main() {
+    int n;
+    scanf("%d", &n);                    // 输入学生人数
+    student stu[100];                   // 存储学生信息（索引1~n）
+
+    // ========== 1. 输入数据并计算辅助字段 ==========
+    for (int i = 1; i <= n; i++) {
+        scanf("%d%d%d", &stu[i].yuwen, &stu[i].math, &stu[i].english);
+        stu[i].id = i;                                    // 记录原始编号
+        stu[i].zong = stu[i].yuwen + stu[i].math + stu[i].english;   // 计算总分
+        stu[i].yushu = stu[i].yuwen + stu[i].math;                   // 计算语数总分
+        // 计算语文和数学的最高分
+        if (stu[i].yuwen > stu[i].math) {
+            stu[i].max = stu[i].yuwen;
+        } else {
+            stu[i].max = stu[i].math;
+        }
+    }
+
+    // ========== 2. 排序：按总分 > 语数总分 > 语数最高分 降序 ==========
+    for (int i = 1; i <= n - 1; i++) {           // 外层循环：比较轮数
+        for (int j = 1; j <= n - i; j++) {       // 内层循环：相邻比较
+            int needSwap = 0;                    // 是否需要交换的标志
+
+            // 优先级1：比较总分
+            if (stu[j].zong < stu[j + 1].zong) {
+                needSwap = 1;                    // 后面总分更高，需要交换
+            }
+            // 总分相等时，比较优先级2：语数总分
+            else if (stu[j].zong == stu[j + 1].zong) {
+                if (stu[j].yushu < stu[j + 1].yushu) {
+                    needSwap = 1;                // 后面语数总分更高，需要交换
+                }
+                // 语数总分也相等时，比较优先级3：语数最高分
+                else if (stu[j].yushu == stu[j + 1].yushu) {
+                    if (stu[j].max < stu[j + 1].max) {
+                        needSwap = 1;            // 后面最高分更高，需要交换
+                    }
+                }
+            }
+
+            // 如果需要交换，交换相邻两个学生
+            if (needSwap) {
+                student tmp = stu[j];
+                stu[j] = stu[j + 1];
+                stu[j + 1] = tmp;
+            }
+        }
+    }
+
+    // ========== 3. 分配排名 ==========
+    stu[1].pai = 1;                             // 第一名排名为1
+    for (int i = 1; i < n; i++) {               // 从第1个开始，依次确定后续排名
+        // 如果当前学生和下一个学生所有比较字段都相等，则排名相同（并列）
+        if (stu[i].zong == stu[i + 1].zong &&
+            stu[i].yushu == stu[i + 1].yushu &&
+            stu[i].max == stu[i + 1].max) {
+            stu[i + 1].pai = stu[i].pai;        // 并列，排名相同
+        } else {
+            stu[i + 1].pai = i + 1;             // 不并列，排名 = 当前顺序位置
+        }
+    }
+
+    // ========== 4. 按原始编号顺序输出排名 ==========
+    for (int i = 1; i <= n; i++) {              // 遍历原始编号 1~n
+        for (int j = 1; j <= n; j++) {          // 在排序后的数组中查找该编号
+            if (stu[j].id == i) {               // 找到原始编号为 i 的学生
+                printf("%d\n", stu[j].pai);     // 输出其排名
+                break;                          // 找到后跳出内层循环
+            }
+        }
+    }
+
+    return 0;
+}
