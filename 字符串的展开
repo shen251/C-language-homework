@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+int main() {
+    int p1, p2, p3;
+    char s[110];
+    int i, j, k;
+    int len;
+    char left, right;
+    char start, end;
+    char ch, fill;    
+    scanf("%d%d%d", &p1, &p2, &p3);
+    scanf("%s", s); 
+    len = strlen(s);    
+    for(i = 0; i < len; i++) {
+        if(s[i] != '-') {
+            printf("%c", s[i]);
+            continue;
+        }        
+        if(i == 0 || i == len - 1) {
+            printf("-");
+            continue;
+        }        
+        left = s[i - 1];
+        right = s[i + 1];        
+        if(!((left >= 'a' && left <= 'z' && right >= 'a' && right <= 'z') ||
+             (left >= '0' && left <= '9' && right >= '0' && right <= '9'))) {
+            printf("-");
+            continue;
+        }        
+        if(left >= right) {
+            printf("-");
+            continue;
+        }        
+        if(left + 1 == right) {
+            continue;
+        }        
+        start = left + 1;
+        end = right - 1;        
+        if(p3 == 1) {
+            for(ch = start; ch <= end; ch++) {
+                if(p1 == 1) {
+                    fill = ch;
+                } else if(p1 == 2) {
+                    if(ch >= 'a' && ch <= 'z') {
+                        fill = ch - 'a' + 'A';
+                    } else {
+                        fill = ch;
+                    }
+                } else {
+                    fill = '*';
+                }
+                
+                for(k = 0; k < p2; k++) {
+                    printf("%c", fill);
+                }
+            }
+        } else {
+            for(ch = end; ch >= start; ch--) {
+                if(p1 == 1) {
+                    fill = ch;
+                } else if(p1 == 2) {
+                    if(ch >= 'a' && ch <= 'z') {
+                        fill = ch - 'a' + 'A';
+                    } else {
+                        fill = ch;
+                    }
+                } else {
+                    fill = '*';
+                }                
+                for(k = 0; k < p2; k++) {
+                    printf("%c", fill);
+                }
+            }
+        }
+    }    
+    printf("\n");
+    return 0;
+}
