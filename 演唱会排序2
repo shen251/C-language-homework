@@ -1,0 +1,36 @@
+#include<stdio.h>
+typedef struct{
+	int id;
+	double ping;
+	int pai;
+}string;
+int main(){
+	int n, m,a,sum=0;
+	int d[100][100];
+	string b[100];
+	scanf("%d%d%d",&n,&m,&a);
+	for(int i=1;i<=a;i++){
+		for(int j=1;j<=n;j++){
+			scanf("%d",&d[i][j]);
+		}
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=a;j++) {
+			sum+=d[j][i];
+		}
+		b[i].ping=sum/a;
+		b[i].id=i;
+	}
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n-i;j++){
+			if(b[j].ping<b[i+1].ping){
+				string c;
+				c=b[j];b[j]=b[j+1];b[j+1]=c;
+			}
+		} 
+	}
+	for(int i=1;i<=m;i++){
+		printf("%d",b[i].id);
+	}
+	return 0;
+} 
