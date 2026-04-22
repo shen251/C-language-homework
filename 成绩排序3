@@ -1,0 +1,33 @@
+#include<stdio.h>
+typedef struct{
+	int id;
+	double ping;
+	int pai; 
+}timu;
+int main()
+{
+	int n,k,b,sum=0;
+	timu a[100];
+	scanf("%d",&n,&k);
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=k;j++){
+			scanf("%d",&b);
+			sum+=b; 
+		}
+		a[i].id=i;
+		a[i].ping=sum/k;
+		sum=0;
+	} 
+	for(int i=1;i<=n;i++){
+		for(int j=1;j<=n-i;j++){
+			if(a[j].ping<a[j+1].ping){
+				timu zhong;
+				zhong=a[j];a[j]=a[j+1];a[j+1]=zhong; 
+			}
+		}
+	}
+	for(int i=1;i<=2;i++){
+		printf("%d",a[i].id);
+	} 
+	return 0;
+}
