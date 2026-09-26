@@ -1,0 +1,127 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#define MAX 101
+struct student{
+	int xuehao;
+	char name[10];
+	double chengji;
+};
+void all(struct student class1[], int *n){
+		printf("===== 成绩统计 =====\n");
+	for(int i=1;i<=*n;i++){
+	printf("第%d名同学\n",i);
+    printf("学号：%d\n", class1[i].xuehao);
+    printf("姓名：%s\n", class1[i].name);
+    printf("成绩：%.1lf\n", class1[i].chengji);
+	}
+}
+void chazhao(struct student class1[], char name[10],int *n){
+	int found=0;
+	for(int i=1;i<=*n;i++){
+		if(strcmp(class1[i].name,name)==0){
+		printf("%s的成绩为：\n",name);
+		printf("学号：%10d\n", class1[i].xuehao);
+        printf("成绩：%5.1lf\n", class1[i].chengji);
+        found=1;
+		}
+	}
+	if (found == 0) {
+        printf("\n\033[1;31m未找到该学生！\033[0m\n");
+    }
+}
+void charu(struct student class1[],int xuehao,char name[10],double chengji,int y,int *n){
+	if(*n==MAX){
+		printf("顺序表已满 无法再加入新的数据\n");
+		return;		
+	}
+	else if(y<=0||y>*n+1){
+		printf("请插入正确位置\n");
+		return;
+	}
+	else{
+		for(int i=*n;i>=y;i--){
+			class1[i+1]=class1[i];
+		}
+		*n=*n+1;
+	
+	class1[y].xuehao=xuehao;
+	strcpy(class1[y].name,name);
+	class1[y].chengji=chengji;}
+}
+void shanchu(struct student class1[],int z,int *n){
+	if(z<=0||z>*n){
+		printf("请删除正确位置\n");
+		return;
+	}
+	else{
+		for(int i=z;i<*n;i++){
+			class1[i]=class1[i+1];
+		}
+		*n=*n-1;		
+	}
+}
+void kong(struct student class1[],int *pn)
+{
+	int x,y,z,xuehao;
+	char name[10];
+	double chengji;
+	while(1){
+	printf("显示信息表中所有学生的相关信息请输1\n");
+	printf("要根据姓名进行查找请输2\n");
+	printf("要插入表中的信息请输3\n");
+	printf("要删除指定位置的学生记录请输4\n");
+	printf("统计表中学生人数请输5\n");
+	printf("退出请输入6\n");
+	scanf("%d",&x);
+	if(x==1){
+		all(class1,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	if(x==2){
+		printf("请输入要查找的人\n");
+		char ming[10];
+		scanf("%9s",ming);
+		chazhao(class1,ming,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	if(x==3){
+		printf("请给定一个学生信息\n");
+		scanf("%d%s%lf",&xuehao,name,&chengji);
+		printf("插入到表中指定的位置\n");
+		scanf("%d",&y);
+		charu(class1,xuehao,name,chengji,y,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	if(x==4){
+		printf("要删除哪个位置的学生\n");
+		scanf("%d",&z);
+		shanchu(class1,z,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	if(x==5){
+		printf("总人数为%d\n",*pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	if(x==6){
+		exit(0);
+	}
+	if(x!=1||x!=2||x!=3||x!=4||x!=5||x!=6){
+		printf("\033[1;31m请执行正确指令！\033[0m\n"); 
+	}
+}
+}
+int main()
+{
+	struct student class1[MAX];
+	int n;
+	printf("请输入有多少学生\n");
+	scanf("%d",&n);
+	printf("请输入%d人的信息",n);
+	for(int i=1;i<=n;i++){
+		scanf("%d",&class1[i].xuehao);
+		scanf("%9s",class1[i].name);
+		scanf("%lf",&class1[i].chengji);
+	}
+	kong(class1,&n);
+}
