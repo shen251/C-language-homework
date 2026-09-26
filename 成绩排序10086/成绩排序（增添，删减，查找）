@@ -106,7 +106,7 @@ void kong(struct student class1[],int *pn)
 	if(x==6){
 		exit(0);
 	}
-	if(x!=1||x!=2||x!=3||x!=4||x!=5||x!=6){
+	if(x!=1&&x!=2&&x!=3&&x!=4&&x!=5&&x!=6){
 		printf("\033[1;31m请执行正确指令！\033[0m\n"); 
 	}
 }
