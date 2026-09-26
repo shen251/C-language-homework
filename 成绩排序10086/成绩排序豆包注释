@@ -1,0 +1,193 @@
+// 标准输入输出头文件：提供 printf、scanf 等输入输出函数
+#include<stdio.h>
+// 字符串处理头文件：提供 strcmp、strcpy 等字符串操作函数
+#include<string.h>
+// 标准库头文件：提供 exit 等程序控制函数
+#include<stdlib.h>
+
+// 定义顺序表最大容量：下标从1开始使用，最多可存储100个学生
+#define MAX 101
+
+// 学生信息结构体：封装单个学生的全部数据字段
+struct student{
+	int xuehao;       // 学号（整型）
+	char name[10];    // 姓名（字符数组，最多存9个有效字符+1个结束符）
+	double chengji;   // 成绩（双精度浮点型）
+};
+
+// ==============================================
+// 函数功能：遍历输出所有学生的完整信息
+// 传入参数：class1 - 学生数组首地址；n - 学生总人数的指针
+// ==============================================
+void all(struct student class1[], int *n){
+		printf("===== 成绩统计 =====\n");
+	// 从第1位学生开始，遍历到最后一位学生
+	for(int i=1;i<=*n;i++){
+	printf("第%d名同学\n",i);
+    printf("学号：%d\n", class1[i].xuehao);
+    printf("姓名：%s\n", class1[i].name);
+    printf("成绩：%.1lf\n", class1[i].chengji);
+	}
+}
+
+// ==============================================
+// 函数功能：根据姓名精准查找学生信息
+// 传入参数：class1 - 学生数组首地址；name - 待查找的姓名；n - 学生总人数的指针
+// ==============================================
+void chazhao(struct student class1[], char name[10],int *n){
+	int found=0;  // 查找标记：0=未找到匹配学生，1=已找到匹配学生
+	// 遍历全部学生，逐一比对姓名
+	for(int i=1;i<=*n;i++){
+		// strcmp 字符串比较函数，返回0表示两个字符串内容完全一致
+		if(strcmp(class1[i].name,name)==0){
+		printf("%s的成绩为：\n",name);
+		printf("学号：%10d\n", class1[i].xuehao);
+        printf("成绩：%5.1lf\n", class1[i].chengji);
+        found=1;  // 匹配成功，标记为已找到
+		}
+	}
+	// 遍历结束仍未找到，输出红色高亮提示
+	if (found == 0) {
+        printf("\n\033[1;31m未找到该学生！\033[0m\n");
+    }
+}
+
+// ==============================================
+// 函数功能：在指定位置插入一条新的学生记录
+// 传入参数：class1 - 学生数组首地址；xuehao/name/chengji - 新学生信息；y - 插入位置；n - 学生总人数的指针
+// ==============================================
+void charu(struct student class1[],int xuehao,char name[10],double chengji,int y,int *n){
+	// 边界判断：顺序表已满，无法插入
+	if(*n==MAX){
+		printf("顺序表已满 无法再加入新的数据\n");
+		return;		
+	}
+	// 边界判断：插入位置不合法
+	else if(y<=0||y>*n+1){
+		printf("请插入正确位置\n");
+		return;
+	}
+	else{
+		// 从最后一个元素开始，将插入位置及之后的所有元素整体后移一位
+		for(int i=*n;i>=y;i--){
+			class1[i+1]=class1[i];
+		}
+		// 总人数自增1
+		*n=*n+1;
+	
+	// 在目标位置写入新学生的信息
+	class1[y].xuehao=xuehao;
+	strcpy(class1[y].name,name);  // 拷贝姓名字符串到数组中
+	class1[y].chengji=chengji;}
+}
+
+// ==============================================
+// 函数功能：删除指定位置的学生记录
+// 传入参数：class1 - 学生数组首地址；z - 删除位置；n - 学生总人数的指针
+// ==============================================
+void shanchu(struct student class1[],int z,int *n){
+	// 边界判断：删除位置不合法
+	if(z<=0||z>*n){
+		printf("请删除正确位置\n");
+		return;
+	}
+	else{
+		// 从删除位置开始，后续所有元素整体前移一位，覆盖被删除的元素
+		for(int i=z;i<*n;i++){
+			class1[i]=class1[i+1];
+		}
+		// 总人数自减1
+		*n=*n-1;		
+	}
+}
+
+// ==============================================
+// 函数功能：主菜单循环，展示功能选项并调度对应功能
+// 传入参数：class1 - 学生数组首地址；pn - 学生总人数的指针
+// ==============================================
+void kong(struct student class1[],int *pn)
+{
+	int x,y,z,xuehao;  // x：功能选项；y：插入位置；z：删除位置；xuehao：临时存储学号
+	char name[10];     // 临时存储姓名
+	double chengji;    // 临时存储成绩
+
+	// 死循环：持续展示菜单，直到用户主动选择退出
+	while(1){
+	// 打印功能菜单列表
+	printf("显示信息表中所有学生的相关信息请输1\n");
+	printf("要根据姓名进行查找请输2\n");
+	printf("要插入表中的信息请输3\n");
+	printf("要删除指定位置的学生记录请输4\n");
+	printf("统计表中学生人数请输5\n");
+	printf("退出请输入6\n");
+	scanf("%d",&x);  // 读取用户输入的功能编号
+
+	// 功能1：显示全部学生信息
+	if(x==1){
+		all(class1,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	// 功能2：按姓名查找学生
+	if(x==2){
+		printf("请输入要查找的人\n");
+		char ming[10];
+		scanf("%9s",ming);  // 限制输入长度，防止数组越界
+		chazhao(class1,ming,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	// 功能3：插入学生信息到指定位置
+	if(x==3){
+		printf("请给定一个学生信息\n");
+		scanf("%d%s%lf",&xuehao,name,&chengji);
+		printf("插入到表中指定的位置\n");
+		scanf("%d",&y);
+		charu(class1,xuehao,name,chengji,y,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	// 功能4：删除指定位置的学生
+	if(x==4){
+		printf("要删除哪个位置的学生\n");
+		scanf("%d",&z);
+		shanchu(class1,z,pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	// 功能5：输出当前学生总人数
+	if(x==5){
+		printf("总人数为%d\n",*pn);
+		printf("\033[1;31m已完成指令\033[0m\n");
+	}
+	// 功能6：直接退出整个程序
+	if(x==6){
+		exit(0);
+	}
+	// 输入非指定编号时的错误提示
+	if(x!=1||x!=2||x!=3||x!=4||x!=5||x!=6){
+		printf("\033[1;31m请执行正确指令！\033[0m\n"); 
+	}
+}
+}
+
+// ==============================================
+// 主函数：程序入口，完成初始化与菜单调用
+// ==============================================
+int main()
+{
+	struct student class1[MAX];  // 定义学生数组，作为顺序表的存储载体
+	int n;                       // 初始学生人数
+
+	printf("请输入有多少学生\n");
+	scanf("%d",&n);
+
+	printf("请输入%d人的信息",n);
+	// 循环录入初始的学生信息，数组下标从1开始使用
+	for(int i=1;i<=n;i++){
+		scanf("%d",&class1[i].xuehao);
+		scanf("%9s",class1[i].name);
+		scanf("%lf",&class1[i].chengji);
+	}
+
+	// 进入主菜单，传入n的地址，保证人数在所有函数中同步修改
+	kong(class1,&n);
+
+	return 0;
+}
