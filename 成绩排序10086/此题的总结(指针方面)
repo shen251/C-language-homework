@@ -1,0 +1,74 @@
+本题主要运用了指针的传递性
+1.事先说明 int *np=&n 等价于int* np=&n 都是定义一个指针变量 但我对前者会时常混淆
+多数人用于前者的原因是 这种方法可以同时定义多个变量 比如:
+  int *np,n;  //定义一个int 类型的指针变量 `np`  和 int类型的变量n;
+而后者只能分两步定义:
+  int* np;
+  int n;
+但我喜欢用后一种 因为他能直接告诉我np存储的就是n的地址  //记住 np存的是n的地址 而不是*np
+对了
+还有一点
+*在不同的地点作用还不同
+定义指针时：`*` 是「类型标记」 也就是上面所讲的内容
+他的作用 只是用来告诉编译器：np 是一个指针变量，它的类型是 'int*'
+在使用指针时   `*` 是「解引用运算符」
+比如*np=n;
+就是顺着 np 里存的地址，找到对应的内存单元，操作里面的值。
+- 写 *np = 10 就等价于写 n = 10
+- 读 printf("%d", *np) 就等价于读n的值
+
+
+
+  
+2.知道以上 我们来研究指针怎么使用
+ 1.从主函数传到自定义函数 使其自定义函数能够直接访问本体 而不是副本 便于更改
+ 比如
+ #include<stdio.h>
+ void zhizhen(int* np){
+   printf("%d",*np);   //输出为10
+}
+int main(){
+  int n=10;
+int* np=&n;
+  zhizhen(np);
+}
+以下就借助上方的例子来解释
+主函数定义了np为int类型的指针变量 所以 要传到自定义函数时也要有对应的参数列表来保存  
+ 所以在自定义函数中定义的是 int* np  而不是int np;                                         自定义函数的格式 
+ 然后在使用时直接用*np  就能直接修改本体了;                                                                                    返回值类型  函数名(参数列表)
+ 特别的                                                                               {
+ 结构体也可以这样干                                                                     函数体：具体执行的代码
+ 例子:                                                                                   return 返回值;  // 对应返回值类型，void类型可以省略
+                                                                                }
+#include<stdio.h>
+#define MAX 101  //定义MAX=101  之后再写代码的时候时MAX就等于101
+struct student{
+	int xuehao;
+	char name[10];
+	double chengji;
+};
+ void zhizhen(struct student class1[]){
+  printf("学号：%d\n", class1[i].xuehao);
+    printf("姓名：%s\n", class1[i].name);
+    printf("成绩：%.1lf\n", class1[i].chengji);
+}
+int main(){
+struct student class1[MAX];    //先定义结构体数组名
+  zhizhen(class1);
+}
+原理:
+- 形参 `struct student class1[]` 本质上等价于 `struct student *class1`
+- 实参 `class1` 是数组名，本身就是数组首元素的内存地址
+- 最终传递的就是首地址，函数里顺着地址直接操作原数组内存
+
+
+
+
+
+
+
+
+
+
+
+
